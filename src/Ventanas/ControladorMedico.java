@@ -30,6 +30,11 @@ public class ControladorMedico {
         ventana.getBtnCerrarSesion().setOnAction(new EventoCerrarSesion());
         ventana.getSPBCompletarEv().setOnAction(new EventoSPCompletarEv());
         ventana.getSPBHoraMuerte().setOnAction(new EventoHoraMuerte());
+        
+        
+        ventana.getSPBRegTrat().setOnAction(new EventoRegTrat());
+        ventana.getSPBSalidaPac().setOnAction(new EventoSalidaPac());
+        ventana.getSPBIngresarNuPac().setOnAction(new EventoIngresarNuPac());
     }
     
     public void mostrarVista () throws SQLException {
@@ -64,6 +69,36 @@ public class ControladorMedico {
                     break;
                 case "proc_horaMuerte":
                     ventana.getTabPane().getTabs().add(ventana.getTabSPHoraMuerte());
+                    break;
+                case "proc_ingresarNuPac":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPIngresarNuPac());
+                    break;
+                case "proc_invout":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPInvout());
+                    break;
+                case "proc_misPacientes":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPMisPac());
+                    break;
+                case "proc_nuevaDir":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPNuevaDir());
+                    break;
+                case "proc_personaNuDir":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPPersonaNuDir());
+                    break;
+                case "proc_personaOlDir":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPPersonaOlDir());
+                    break; 
+                case "proc_regIngreso":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPRegIngreso());
+                    break;
+                case "proc_regNuEval":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPRegNuEval());
+                    break;
+                case "proc_regTratamiento":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPRegTrat());
+                    break;
+                case "proc_salidaPac":
+                    ventana.getTabPane().getTabs().add(ventana.getTabSPSalidaPac());
                     break;
             }
         }
@@ -166,5 +201,58 @@ public class ControladorMedico {
                 Logger.getLogger(ControladorMedico.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    class EventoRegTrat implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            Singleton singleton = Singleton.getSingleton();
+            Connection conexion = singleton.getConexion();
+            try {
+                ResultSet rs = conexion.createStatement().executeQuery("call proc_regTratamiento(" + ventana.getSPP1RegTrat().getText() + "," + ventana.getSPP2RegTrat().getText() + "," +
+                        ventana.getSPP3RegTrat().getText() + "," + ventana.getSPP4RegTrat().getText() + "," + ventana.getSPP5RegTrat().getText() + "," + ventana.getSPP6RegTrat().getText() + "," +
+                        ventana.getSPP7RegTrat().getText() + "," + ventana.getSPP8RegTrat().getText() + "," + ventana.getSPP9RegTrat().getText() + ",'" + ventana.getSPP10RegTrat().getText() + "'," +
+                        ventana.getSPP11RegTrat().getText() + "," + ventana.getSPP12RegTrat().getText() + "," + ventana.getSPP13RegTrat().getText() + "," + ventana.getSPP14RegTrat().getText() + ")");
+                ventana.getSPEMRegTrat().setVisible(false);
+                ventana.getSPEMRegTrat().setManaged(false);
+                while (rs.next()){
+                    ventana.getSPEMRegTrat().setVisible(true);
+                    ventana.getSPEMRegTrat().setManaged(true);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorMedico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    class EventoSalidaPac implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            Singleton singleton = Singleton.getSingleton();
+            Connection conexion = singleton.getConexion();
+            try {
+                conexion.createStatement().executeQuery("call proc_salidaPac(" + ventana.getSPPSalidaPac().getText() + ")");
+                ventana.getSPEMSalidaPac().setVisible(false);
+                ventana.getSPEMSalidaPac().setManaged(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorMedico.class.getName()).log(Level.SEVERE, null, ex);
+                ventana.getSPEMSalidaPac().setVisible(true);
+                ventana.getSPEMSalidaPac().setManaged(true);
+            }
+        }
+    }
+    
+    class EventoIngresarNuPac implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            Singleton singleton = Singleton.getSingleton();
+            Connection conexion = singleton.getConexion();
+            try {
+                conexion.createStatement().executeQuery("call proc_ingresarNuPac(" + ventana.getSPP1IngresarNuPac().getText() + "," + ventana.getSPP2IngresarNuPac().getText() + "," + ventana.getSPP3IngresarNuPac().getText() + ", '" + ventana.getSPP4IngresarNuPac().getText() + "', " + ventana.getSPP5IngresarNuPac().getText() + ", '" + ventana.getSPP6IngresarNuPac().getText() + "', '" + ventana.getSPP7IngresarNuPac().getText() + "', '"+ ventana.getSPP8IngresarNuPac().getText() + "', " + ventana.getSPP9IngresarNuPac().getText() + ", '" + ventana.getSPP10IngresarNuPac().getText() + "', '" + ventana.getSPP11IngresarNuPac().getText() + "', '" + ventana.getSPP12IngresarNuPac().getText() + "', '" + ventana.getSPP13IngresarNuPac().getText() + "', '" + ventana.getSPP14IngresarNuPac().getText() + "', " + ventana.getSPP15IngresarNuPac().getText() + ", " + ventana.getSPP16IngresarNuPac().getText() + ")");
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorMedico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
 }
